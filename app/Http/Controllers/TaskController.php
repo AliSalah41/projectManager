@@ -153,4 +153,34 @@ class TaskController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'name' => 'string|nullable',
+            'status' => 'string|in:pending,in progress,completed|nullable',
+            'assigned_user_id' => 'integer|exists:users,id|nullable',
+        ]);
+
+        $tasks = Task::query();
+
+        if ($request->filled('name')) {
+            $tasks->where('name', 'LIKE', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('status')) {
+            $tasks->where('status', $request->status);
+        }
+
+        if ($request->filled('assigned_user_id')) {
+            $tasks->where('assigned_user_id', $request->assigned_user_id);
+        }
+
+        $tasks = $tasks->with(['project', 'assignedUser'])->get();
+
+        return response()->json([
+            'message' => 'Search results retrieved successfully.',
+            'data' => TaskResource::collection($tasks),
+        ], 200);
+    }
 }

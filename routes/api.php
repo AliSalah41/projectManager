@@ -39,6 +39,9 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('task.show/{id}',[TaskController::class,'show'])->name('task.show');
     Route::post('task.store',[TaskController::class,'store'])->name('task.store');
     Route::put('task.update/{id}',[TaskController::class,'update'])->name('task.update');
+    
+    //Search
+    Route::get('task.search',[TaskController::class,'search'])->name('task.search');
 
     //History 
     Route::get('history.show/{id}',[HistoryController::class,'show'])->name('history.show');
