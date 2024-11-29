@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaskRequest extends FormRequest
+class UpdateTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,19 +23,14 @@ class TaskRequest extends FormRequest
     {
         return [
             'name' => "required",
-            'description' => "string|nullable",
-            'status' => "required|string|in:pending,in progress else completed",
+            'description' => "nullable",
+            'status' => "string|in:pending,in progress,completed|nullable",
             'priority' => "numeric|nullable",
-            'project_id' => "required|numeric",
+            'project_id' => "numeric|nullable",
             'parent_task_id' => "numeric|nullable",
             'assigned_user_id' => "numeric|nullable",
             'start_date' => "date|nullable",
             'end_date' => "date|nullable",
         ];
-    }
-
-    public function wantsJson()
-    {
-        return true;
     }
 }

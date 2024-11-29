@@ -14,4 +14,9 @@ class TaskHistory extends Model
     {
         return $this->belongsTo(Task::class);
     }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class,'updated_by');
+    }
 }

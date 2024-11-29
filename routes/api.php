@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DependencyController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +30,21 @@ Route::middleware(['guest'])->group(function (){
 
 Route::middleware(['auth:sanctum'])->group(function (){
 
+    //Project
     Route::get('project.index',[ProjectController::class,'index'])->name('project.index');
     Route::get('project.show/{project}',[ProjectController::class,'show'])->name('project.show');
     Route::post('project.store',[ProjectController::class,'store'])->name('project.store');
+
+    //Task
+    Route::get('task.show/{id}',[TaskController::class,'show'])->name('task.show');
+    Route::post('task.store',[TaskController::class,'store'])->name('task.store');
+    Route::put('task.update/{id}',[TaskController::class,'update'])->name('task.update');
+
+    //History 
+    Route::get('history.show/{id}',[HistoryController::class,'show'])->name('history.show');
+
+    //Task_Dependency
+    Route::post('task_dependency.store',[DependencyController::class,'store'])->name('task_dependency.store');
+    Route::delete('task_dependency.delete',[DependencyController::class,'destroy'])->name('task_dependency.delete');
 
 });
