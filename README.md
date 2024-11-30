@@ -53,7 +53,7 @@ Import api collection in postman
 
 ## Postman:
 
-**The postman collection is in the project folder(json_file) you cant import the file in postman and it should work.**
+**The postman collection is in the project folder(json_file) you can import the file in postman and it should work.**
 
 <!-- Open the DummyDataSeeder and set the property values as per your requirement -->
 
