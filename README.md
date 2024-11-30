@@ -47,6 +47,10 @@ Start the local development server
 
     You can now access the server at http://127.0.0.1:8000/
 
+Import api collection in postman
+
+    filename:Project Manager.postman_collection.json
+
 ## Postman:
 
 **The postman collection is in the project folder(json_file) you cant import the file in postman and it should work.**
