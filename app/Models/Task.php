@@ -42,4 +42,60 @@ class Task extends Model
     {
         return $this->hasMany(TaskHistory::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($task) {
+            $task->subtasks()->delete();
+            $task->dependencies()->detach();
+            TaskDependency::where('dependency_id', $task->id)->delete();
+        });
+    }
+
+    public function hasCircularDependency($dependencyId)
+    {
+        $visited = [];
+
+        $stack = [$this];
+
+        while (!empty($stack)) {
+            $currentTask = array_pop($stack);
+
+            if ($currentTask->id == $dependencyId) {
+                return true;
+            }
+
+            $visited[$currentTask->id] = true;
+
+            foreach ($currentTask->dependencies as $dependency) {
+                if (!isset($visited[$dependency->id])) {
+                    $stack[] = $dependency;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected function checkDependenciesCompleted($task)
+    {
+        // If the task has no dependencies, consider it as completed.
+        if (!$task->dependencies || $task->dependencies->isEmpty()) {
+            return true;
+        }
+
+        // Check if all dependencies are marked as "completed".
+        foreach ($task->dependencies as $dependency) {
+            if ($dependency->status !== 'completed') {
+                return false; // At least one dependency is not completed.
+            }
+        }
+
+        return true; // All dependencies are completed.
+    }
+
+
+
 }

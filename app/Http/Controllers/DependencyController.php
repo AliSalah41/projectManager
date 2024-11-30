@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\TaskDependency;
 use Illuminate\Http\Request;
 
@@ -14,10 +15,39 @@ class DependencyController extends Controller
             'dependency_id' => "required|numeric",
         ]);
 
-        $dependency = TaskDependency::create([
-            'task_id' => $request->task_id,
-            'dependency_id' => $request->dependency_id,
-        ]);
+        $task = Task::find($request->task_id);
+        $dependency = Task::find($request->dependency_id);
+
+        if(!$task)
+        {
+            return response()->json([
+                'message' => 'task not found',
+                'status' => false,
+            ],404);
+        }
+
+        if(!$dependency)
+        {
+            return response()->json([
+                'message' => 'dependant task not found',
+                'status' => false,
+            ],404);
+        }
+
+        if ($task->hasCircularDependency($dependency->id)) {
+            return response()->json([
+                'message' => 'Circular dependency detected. Cannot add this dependency.',
+                'status' => false,
+            ], 400);
+        }
+
+        $task->dependencies()->attach($dependency->id);
+    
+
+        // $dependency = TaskDependency::create([
+        //     'task_id' => $request->task_id,
+        //     'dependency_id' => $request->dependency_id,
+        // ]);
         
         if($dependency)
         {

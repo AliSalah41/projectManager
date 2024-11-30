@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('task.show/{id}',[TaskController::class,'show'])->name('task.show');
     Route::post('task.store',[TaskController::class,'store'])->name('task.store');
     Route::put('task.update/{id}',[TaskController::class,'update'])->name('task.update');
+    Route::delete('task.delete/{id}',[TaskController::class,'destroy'])->name('task.delete');
     
     //Search
     Route::get('task.search',[TaskController::class,'search'])->name('task.search');
@@ -49,5 +50,8 @@ Route::middleware(['auth:sanctum'])->group(function (){
     //Task_Dependency
     Route::post('task_dependency.store',[DependencyController::class,'store'])->name('task_dependency.store');
     Route::delete('task_dependency.delete',[DependencyController::class,'destroy'])->name('task_dependency.delete');
+
+    //Assign_Task
+    Route::post('assignTask/{taskId}',[TaskController::class,'assignTask'])->name('assignTask');
 
 });

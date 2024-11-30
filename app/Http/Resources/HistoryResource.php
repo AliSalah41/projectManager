@@ -16,6 +16,7 @@ class HistoryResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
+            'id' => $this->id,
             'task' =>new TaskResource($this->whenLoaded('task')),
             'updated_by' =>new UserResource($this->whenLoaded('updatedBy')),
             'status' => $this->status,
